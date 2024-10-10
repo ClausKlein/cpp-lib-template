@@ -21,8 +21,9 @@ endif()
 #----------------------------------------------------------------------------------------------------------------------
 
 include(FetchContent)
-FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
-    DOWNLOAD_EXTRACT_TIMESTAMP ON)
+FetchContent_Declare(
+    googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz DOWNLOAD_EXTRACT_TIMESTAMP ON
+)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE) # do not override parent project's runtime settings on Windows
 set(INSTALL_GTEST OFF)
@@ -45,8 +46,7 @@ endif()
 # tests sources
 #----------------------------------------------------------------------------------------------------------------------
 
-set(sources
-    add_test.cpp)
+set(sources add_test.cpp)
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -56,10 +56,7 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 add_executable(mylib-tests)
 target_sources(mylib-tests PRIVATE ${sources})
 
-target_link_libraries(mylib-tests
-    PRIVATE
-        mylib::mylib
-        gtest_main)
+target_link_libraries(mylib-tests PRIVATE mylib::mylib gtest_main)
 
 if(NOT is_top_level)
     win_copy_deps_to_target_dir(mylib-tests mylib::mylib)

@@ -6,7 +6,7 @@ math(EXPR dir_idx "${CMAKE_ARGC} - 1")
 set(first_file_idx ${dir_idx})
 
 foreach(i RANGE ${dir_idx})
-    if ("${CMAKE_ARGV${i}}" STREQUAL "-P")
+    if("${CMAKE_ARGV${i}}" STREQUAL "-P")
         math(EXPR first_file_idx "${i} + 2")
         break()
     endif()
