@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.25...3.30)
 project(mylib
     VERSION 1.0.0
     DESCRIPTION "Template for C++ library built with CMake"
@@ -14,8 +14,8 @@ include(GNUInstallDirs)
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
 
 # MYLIB_SHARED_LIBS option (undefined by default) can be used to force shared/static build
-option(MYLIB_BUILD_TESTS "Build mylib tests" OFF)
-option(MYLIB_BUILD_EXAMPLES "Build mylib examples" OFF)
+option(MYLIB_BUILD_TESTS "Build mylib tests" ${is_top_level})
+option(MYLIB_BUILD_EXAMPLES "Build mylib examples" ${is_top_level})
 option(MYLIB_BUILD_DOCS "Build mylib documentation" OFF)
 option(MYLIB_INSTALL "Generate target for installing mylib" ${is_top_level})
 set_if_undefined(MYLIB_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/mylib" CACHE STRING
@@ -29,6 +29,10 @@ if(NOT DEFINED CMAKE_BUILD_TYPE AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
+
+# Neither of these two are technically needed, but they make the expectation clear
+set_if_undefined(CMAKE_CXX_STANDARD 20)
+set_if_undefined(CMAKE_CXX_EXTENSIONS FALSE)
 
 set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set_if_undefined(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
@@ -67,13 +71,22 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 include(CMakePackageConfigHelpers)
 
-target_sources(mylib PRIVATE ${sources})
+
+target_sources(mylib PRIVATE src/mylib.cpp)
+target_sources(mylib PUBLIC FILE_SET HEADERS
+    BASE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_BINARY_DIR}/include
+    FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/mylib/mylib.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/mylib/export.h
+        ${CMAKE_CURRENT_BINARY_DIR}/include/mylib/${export_file_name})
 target_compile_definitions(mylib PUBLIC "$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:MYLIB_STATIC_DEFINE>")
 
-target_include_directories(mylib
-    PUBLIC
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>")
+# target_include_directories(mylib
+#     PUBLIC
+#         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+#         "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>")
 
 set_target_properties(mylib PROPERTIES
     SOVERSION ${PROJECT_VERSION_MAJOR}
@@ -90,13 +103,15 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
         RUNTIME COMPONENT mylib
         LIBRARY COMPONENT mylib NAMELINK_COMPONENT mylib-dev
         ARCHIVE COMPONENT mylib-dev
+        FILE_SET HEADERS
         INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-    install(DIRECTORY include/
-        TYPE INCLUDE
-        COMPONENT mylib-dev)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/include/mylib/${export_file_name}"
-        COMPONENT mylib-dev
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mylib")
+
+    # install(DIRECTORY include/
+    #     TYPE INCLUDE
+    #     COMPONENT mylib-dev)
+    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/include/mylib/${export_file_name}"
+    #     COMPONENT mylib-dev
+    #     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mylib")
 
     set(targets_file "mylib-shared-targets.cmake")
 

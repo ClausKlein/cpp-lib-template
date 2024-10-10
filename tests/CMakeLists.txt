@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.25...3.30)
 project(mylib-tests)
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -10,6 +10,10 @@ string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_
 
 if(is_top_level)
     enable_testing()
+
+    # Neither of these two are technically needed, but they make the expectation clear
+    set_if_undefined(CMAKE_CXX_STANDARD 20)
+    set_if_undefined(CMAKE_CXX_EXTENSIONS FALSE)
 endif()
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -17,7 +21,8 @@ endif()
 #----------------------------------------------------------------------------------------------------------------------
 
 include(FetchContent)
-FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz)
+FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP ON)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE) # do not override parent project's runtime settings on Windows
 set(INSTALL_GTEST OFF)

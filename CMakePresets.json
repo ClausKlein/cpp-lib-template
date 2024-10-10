@@ -11,9 +11,13 @@
       "description": "Base preset for library developers",
       "binaryDir": "${sourceDir}/build",
       "hidden": true,
+      "generator": "Ninja",
       "cacheVariables": {
-        "MYLIB_BUILD_TESTS": "ON",
-        "MYLIB_BUILD_EXAMPLES": "ON"
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "MYLIB_SHARED_LIBS": true,
+        "MYLIB_BUILD_TESTS": true,
+        "MYLIB_BUILD_EXAMPLES": true
       }
     },
     {
