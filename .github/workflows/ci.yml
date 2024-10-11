@@ -30,10 +30,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install static analyzers
-        if: matrix.os == 'macos-15'
-        run: >-
-          brew install llvm@18 cmake ninja
+      - name: Setup Cpp
+        if: startsWith(matrix.os, 'macos')
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: llvm-18
+          clangtidy: true
+          cmake: true
+          ninja: true
 
       - name: Install static analyzers
         if: matrix.os == 'ubuntu-24.04'
