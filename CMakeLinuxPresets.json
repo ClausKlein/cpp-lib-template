@@ -29,7 +29,7 @@
       "name": "Debug",
       "description": "Possix preset for library developers",
       "inherits": [
-        "ci-std",
+        "Release",
         "dev-mode",
         "clang-tidy"
       ]
