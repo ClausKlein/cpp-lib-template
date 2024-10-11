@@ -23,6 +23,7 @@ endif()
 include(FetchContent)
 FetchContent_Declare(
     googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz DOWNLOAD_EXTRACT_TIMESTAMP ON
+    DOWNLOAD_NO_PROGRESS ON
 )
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE) # do not override parent project's runtime settings on Windows

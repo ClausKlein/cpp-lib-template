@@ -14,6 +14,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_MESSAGE_LOG_LEVEL": "WARNING",
         "MYLIB_SHARED_LIBS": true,
         "MYLIB_BUILD_TESTS": true,
         "MYLIB_BUILD_EXAMPLES": true
@@ -45,6 +46,7 @@
           "type": "path",
           "value": "${sourceDir}/stagedir"
         },
+        "CMAKE_MESSAGE_LOG_LEVEL": "STATUS",
         "BUILD_SHARED_LIBS": false,
         "BUILD_TESTING": true
       }
@@ -78,6 +80,7 @@
       "binaryDir": "${sourceDir}/build",
       "generator": "Ninja",
       "hidden": true,
+      "inherits": "default",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
