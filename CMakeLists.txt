@@ -160,6 +160,7 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
                 OPTIONAL
         )
     endif()
+    include(CPack)
 endif()
 
 #----------------------------------------------------------------------------------------------------------------------
