@@ -27,8 +27,8 @@
       "warnings": {
         "dev": true,
         "deprecated": true,
-        "uninitialized": true,
-        "unusedCli": true,
+        "uninitialized": false,
+        "unusedCli": false,
         "systemVars": false
       },
       "errors": {
