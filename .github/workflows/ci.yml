@@ -19,11 +19,12 @@ jobs:
       matrix:
         os: [macos-15, ubuntu-24.04, windows-2022]
 
-        # type: [shared, static]
+        type: [Debug, Release]
 
+        # link: [shared, static]
         # include:
-        #   - {type: shared, shared: YES}
-        #   - {type: static, shared: NO}
+        #   - {link: shared, shared: YES}
+        #   - {link: static, shared: NO}
 
     runs-on: ${{ matrix.os }}
 
@@ -34,7 +35,7 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         uses: aminya/setup-cpp@v1
         with:
-          compiler: llvm-18
+          # compiler: llvm-18
           clangtidy: true
           cmake: true
           ninja: true
@@ -56,18 +57,18 @@ jobs:
 
       - name: Configure
         shell: pwsh
-        run: cmake --preset=Debug # -D BUILD_SHARED_LIBS=${{ matrix.shared }}
+        run: cmake --preset=${{ matrix.type }}
 
       - name: Setup PATH
         if: matrix.os == 'windows-2022' && matrix.type == 'shared'
-        run: Add-Content "$env:GITHUB_PATH" "$(Get-Location)\build\Debug"
+        run: Add-Content "$env:GITHUB_PATH" "$(Get-Location)\build\${{ matrix.type }}"
 
       - name: Build
-        run: cmake --build build --config Debug -j 2
+        run: cmake --build build --config ${{ matrix.type }} -j 2
 
       - name: Test
         working-directory: build
-        run: ctest --output-on-failure --no-tests=error -C Debug -j 2
+        run: ctest --output-on-failure --no-tests=error -C ${{ matrix.type }}
 
       - name: Install
-        run: cmake --install build --config Debug --prefix prefix
+        run: cmake --install build  --prefix prefix --config ${{ matrix.type }}
