@@ -1,72 +1,42 @@
 {
-  "version": 6,
+  "version": 9,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 25,
+    "minor": 30,
     "patch": 0
   },
-  "configurePresets": [
-    {
-      "name": "dev",
-      "description": "Base preset for library developers",
-      "binaryDir": "${sourceDir}/build",
-      "hidden": true,
-      "generator": "Ninja",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-        "MYLIB_SHARED_LIBS": true,
-        "MYLIB_BUILD_TESTS": true,
-        "MYLIB_BUILD_EXAMPLES": true
-      }
-    },
-    {
-      "name": "dev-win",
-      "description": "Windows preset for library developers",
-      "hidden": false,
-      "inherits": [
-        "dev"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "/W4 /EHsc /w14242 /w14254 /w14263 /w14265 /w14287 /w14289 /w14296 /w14311 /w14545 /w14546 /w14547 /w14549 /w14555 /w14640 /w14826 /w14928 /WX"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
-    },
-    {
-      "name": "Release",
-      "description": "Linux preset for library developers",
-      "hidden": false,
-      "inherits": [
-        "dev"
-      ],
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion -Wcast-align -Wcast-qual -Wnull-dereference -Woverloaded-virtual -Wformat=2 -Werror"
-      },
-      "condition": {
-        "type": "notEquals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
-    }
+  "include": [
+    "CMake${hostSystemName}Presets.json"
   ],
   "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug"
+    },
     {
       "name": "Release",
       "configurePreset": "Release"
     },
     {
-      "name": "install",
-      "configurePreset": "Release",
+      "name": "install-Debug",
+      "configurePreset": "Debug",
       "targets": [
         "install"
       ]
     }
   ],
   "testPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "ignore",
+        "stopOnFailure": true
+      }
+    },
     {
       "name": "Release",
       "configurePreset": "Release",
@@ -75,11 +45,18 @@
       },
       "execution": {
         "noTestsAction": "error",
-        "stopOnFailure": true
+        "stopOnFailure": false
       }
     }
   ],
   "packagePresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug",
+      "generators": [
+        "TGZ"
+      ]
+    },
     {
       "name": "Release",
       "configurePreset": "Release",
@@ -89,6 +66,27 @@
     }
   ],
   "workflowPresets": [
+    {
+      "name": "Debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Debug"
+        },
+        {
+          "type": "build",
+          "name": "Debug"
+        },
+        {
+          "type": "test",
+          "name": "Debug"
+        },
+        {
+          "type": "build",
+          "name": "install-Debug"
+        }
+      ]
+    },
     {
       "name": "Release",
       "steps": [
