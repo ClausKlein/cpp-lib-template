@@ -14,9 +14,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-        "CMAKE_MESSAGE_LOG_LEVEL": "WARNING",
-        "MYLIB_BUILD_TESTS": true,
-        "MYLIB_BUILD_EXAMPLES": true
+        "CMAKE_MESSAGE_LOG_LEVEL": "WARNING"
       }
     },
     {
@@ -45,10 +43,10 @@
           "type": "path",
           "value": "${sourceDir}/stagedir"
         },
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_MESSAGE_LOG_LEVEL": "STATUS",
         "BUILD_SHARED_LIBS": false,
-        "BUILD_TESTING": true
+        "BUILD_TESTING": true,
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_MESSAGE_LOG_LEVEL": "STATUS"
       }
     },
     {
@@ -82,6 +80,7 @@
       "generator": "Ninja",
       "inherits": "default",
       "cacheVariables": {
+        "BUILD_SHARED_LIBS": true,
         "CMAKE_BUILD_TYPE": "Release"
       }
     }
