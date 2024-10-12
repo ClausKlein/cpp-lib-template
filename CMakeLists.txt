@@ -92,11 +92,6 @@ target_sources(
 )
 target_compile_definitions(mylib PUBLIC "$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:MYLIB_STATIC_DEFINE>")
 
-# target_include_directories(mylib
-#     PUBLIC
-#         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-#         "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>")
-
 set_target_properties(mylib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR} VERSION ${PROJECT_VERSION})
 
 if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
@@ -115,13 +110,6 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
             COMPONENT mylib-dev
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     )
-
-    # install(DIRECTORY include/
-    #     TYPE INCLUDE
-    #     COMPONENT mylib-dev)
-    # install(FILES "${CMAKE_CURRENT_BINARY_DIR}/include/mylib/${export_file_name}"
-    #     COMPONENT mylib-dev
-    #     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mylib")
 
     set(targets_file "mylib-shared-targets.cmake")
 

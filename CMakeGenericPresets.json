@@ -13,10 +13,8 @@
       "generator": "Ninja",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
         "CMAKE_MESSAGE_LOG_LEVEL": "WARNING",
-        "MYLIB_SHARED_LIBS": true,
         "MYLIB_BUILD_TESTS": true,
         "MYLIB_BUILD_EXAMPLES": true
       }
@@ -47,6 +45,7 @@
           "type": "path",
           "value": "${sourceDir}/stagedir"
         },
+        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_MESSAGE_LOG_LEVEL": "STATUS",
         "BUILD_SHARED_LIBS": false,
         "BUILD_TESTING": true
@@ -63,7 +62,7 @@
       "name": "clang-tidy",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--header-filter=^${sourceDir}/"
+        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--header-filter=^${sourceDir}/include"
       }
     },
     {
