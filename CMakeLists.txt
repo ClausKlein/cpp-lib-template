@@ -101,15 +101,16 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
 
     write_basic_package_version_file(mylib-config-version.cmake COMPATIBILITY SameMajorVersion)
 
+    # cmake-format: off
     install(TARGETS mylib
             EXPORT mylib_export
             RUNTIME COMPONENT mylib
             LIBRARY COMPONENT mylib NAMELINK_COMPONENT mylib-dev
-            ARCHIVE COMPONENT mylib-dev FILE_SET HEADERS COMPONENT mylib-dev
-            INCLUDES
-            COMPONENT mylib-dev
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            ARCHIVE COMPONENT mylib-dev
+            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            FILE_SET HEADERS COMPONENT mylib-dev
     )
+    # cmake-format: on
 
     set(targets_file "mylib-shared-targets.cmake")
 
