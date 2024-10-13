@@ -1,3 +1,5 @@
+string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
+
 # set_if_undefined(<variable> [<value>]...)
 #
 # Set variable if it is not defined.

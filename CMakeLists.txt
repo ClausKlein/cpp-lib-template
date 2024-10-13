@@ -8,8 +8,6 @@ project(mylib VERSION 1.0.0 DESCRIPTION "Template for C++ library built with CMa
 include(cmake/utils.cmake)
 include(GNUInstallDirs)
 
-string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
-
 # MYLIB_SHARED_LIBS option (undefined by default) can be used to force shared/static build
 option(MYLIB_BUILD_TESTS "Build mylib tests" ${is_top_level})
 option(MYLIB_BUILD_EXAMPLES "Build mylib examples" ${is_top_level})

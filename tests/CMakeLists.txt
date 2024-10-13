@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.25...3.30)
-project(mylib-tests)
+project(mylib-tests LANGUAGES CXX)
 
 #----------------------------------------------------------------------------------------------------------------------
 # general settings and options
 #----------------------------------------------------------------------------------------------------------------------
 
 include("../cmake/utils.cmake")
-string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
 
 if(is_top_level)
     enable_testing()
@@ -28,10 +27,11 @@ FetchContent_Declare(
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE) # do not override parent project's runtime settings on Windows
 set(INSTALL_GTEST OFF)
+set(BUILD_GMOCK OFF)
 
 # For simplicity, always build googletest as static library. This prevents mylib-tests executable from
 # complaining about missing googletest DLLs on Windows.
-set(BUILD_SHARED_LIBS OFF)
+#XXX set(BUILD_SHARED_LIBS OFF)
 
 FetchContent_MakeAvailable(googletest)
 
@@ -40,8 +40,9 @@ FetchContent_MakeAvailable(googletest)
 #----------------------------------------------------------------------------------------------------------------------
 
 if(is_top_level)
-    find_package(mylib QUIET)
+    find_package(mylib 1.0.0 QUIET)
     if(NOT mylib_FOUND)
+        message(STATUS "find_package(mylib) was NOT found, use as subproject ...")
         # test if the targets are usable if used as subproject
         add_subdirectory(.. mylib EXCLUDE_FROM_ALL)
     endif()
