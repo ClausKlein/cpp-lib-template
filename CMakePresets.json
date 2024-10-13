@@ -23,6 +23,13 @@
       "targets": [
         "install"
       ]
+    },
+    {
+      "name": "verify_interface_header-Debug",
+      "configurePreset": "Debug",
+      "targets": [
+        "all_verify_interface_header_sets"
+      ]
     }
   ],
   "testPresets": [
@@ -80,6 +87,10 @@
         {
           "type": "test",
           "name": "Debug"
+        },
+        {
+          "type": "build",
+          "name": "verify_interface_header-Debug"
         },
         {
           "type": "build",

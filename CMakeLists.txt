@@ -76,18 +76,21 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 include(CMakePackageConfigHelpers)
 
 target_sources(mylib PRIVATE src/mylib.cpp)
-target_sources(
-    mylib
-    PUBLIC FILE_SET
-           HEADERS
-           BASE_DIRS
-           ${CMAKE_CURRENT_SOURCE_DIR}/include
+
+# cmake-format: off
+target_sources(mylib
+    PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS
+           include
            ${CMAKE_CURRENT_BINARY_DIR}/include
-           FILES
-           ${CMAKE_CURRENT_SOURCE_DIR}/include/mylib/mylib.h
-           ${CMAKE_CURRENT_SOURCE_DIR}/include/mylib/export.h
+        FILES
+           include/mylib/mylib.h
+           include/mylib/export.h
            ${CMAKE_CURRENT_BINARY_DIR}/include/mylib/${export_file_name}
 )
+# cmake-format: on
+
 target_compile_definitions(mylib PUBLIC "$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:MYLIB_STATIC_DEFINE>")
 
 set_target_properties(mylib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR} VERSION ${PROJECT_VERSION})
@@ -105,7 +108,6 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
             RUNTIME COMPONENT mylib
             LIBRARY COMPONENT mylib NAMELINK_COMPONENT mylib-dev
             ARCHIVE COMPONENT mylib-dev
-            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
             FILE_SET HEADERS COMPONENT mylib-dev
     )
     # cmake-format: on
@@ -148,6 +150,7 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
                 OPTIONAL
         )
     endif()
+
     include(CPack)
 endif()
 
