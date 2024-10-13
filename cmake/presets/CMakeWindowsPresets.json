@@ -30,8 +30,8 @@
       "name": "Debug",
       "description": "Windows preset for library developers",
       "inherits": [
-        "Release",
-        "dev-mode"
+        "dev-mode",
+        "Release"
       ],
       "generator": "Visual Studio 17 2022"
     }

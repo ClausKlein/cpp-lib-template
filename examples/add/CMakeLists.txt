@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.25...3.30)
 project(mylib-add LANGUAGES CXX)
 
 include("../../cmake/utils.cmake")
-string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
 
-if(is_top_level)
-    find_package(mylib REQUIRED)
+if(PROJECT_IS_TOP_LEVEL)
+    find_package(mylib 1.0.0 REQUIRED)
 endif()
 
 set(sources main.cpp)
@@ -15,6 +14,6 @@ add_executable(mylib-add)
 target_sources(mylib-add PRIVATE ${sources})
 target_link_libraries(mylib-add PRIVATE mylib::mylib)
 
-if(NOT is_top_level)
+if(NOT PROJECT_IS_TOP_LEVEL)
     win_copy_deps_to_target_dir(mylib-add mylib::mylib)
 endif()

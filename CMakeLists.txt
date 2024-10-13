@@ -9,10 +9,10 @@ include(cmake/utils.cmake)
 include(GNUInstallDirs)
 
 # MYLIB_SHARED_LIBS option (undefined by default) can be used to force shared/static build
-option(MYLIB_BUILD_TESTS "Build mylib tests" ${is_top_level})
-option(MYLIB_BUILD_EXAMPLES "Build mylib examples" ${is_top_level})
+option(MYLIB_BUILD_TESTS "Build mylib tests" ${PROJECT_IS_TOP_LEVEL})
+option(MYLIB_BUILD_EXAMPLES "Build mylib examples" ${PROJECT_IS_TOP_LEVEL})
 option(MYLIB_BUILD_DOCS "Build mylib documentation" OFF)
-option(MYLIB_INSTALL "Generate target for installing mylib" ${is_top_level})
+option(MYLIB_INSTALL "Generate target for installing mylib" ${PROJECT_IS_TOP_LEVEL})
 set_if_undefined(
     MYLIB_INSTALL_CMAKEDIR
     "${CMAKE_INSTALL_LIBDIR}/cmake/mylib"
@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Neither of these two are technically needed, but they make the expectation clear
-set_if_undefined(CMAKE_CXX_STANDARD 20)
+set_if_undefined(CMAKE_CXX_STANDARD 17)
 set_if_undefined(CMAKE_CXX_EXTENSIONS FALSE)
 
 set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -123,8 +123,9 @@ if(MYLIB_INSTALL AND NOT CMAKE_SKIP_INSTALL_RULES)
             NAMESPACE mylib::
     )
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/mylib-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/mylib-config-version.cmake"
-            COMPONENT mylib-dev DESTINATION "${MYLIB_INSTALL_CMAKEDIR}"
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/mylib-config.cmake"
+                  "${CMAKE_CURRENT_BINARY_DIR}/mylib-config-version.cmake" COMPONENT mylib-dev
+            DESTINATION "${MYLIB_INSTALL_CMAKEDIR}"
     )
 
     if(MSVC)

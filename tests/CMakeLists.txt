@@ -7,11 +7,11 @@ project(mylib-tests LANGUAGES CXX)
 
 include("../cmake/utils.cmake")
 
-if(is_top_level)
+if(PROJECT_IS_TOP_LEVEL)
     enable_testing()
 
     # Neither of these two are technically needed, but they make the expectation clear
-    set_if_undefined(CMAKE_CXX_STANDARD 20)
+    set_if_undefined(CMAKE_CXX_STANDARD 17)
     set_if_undefined(CMAKE_CXX_EXTENSIONS FALSE)
 endif()
 
@@ -29,17 +29,13 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE) # do not override parent proj
 set(INSTALL_GTEST OFF)
 set(BUILD_GMOCK OFF)
 
-# For simplicity, always build googletest as static library. This prevents mylib-tests executable from
-# complaining about missing googletest DLLs on Windows.
-#XXX set(BUILD_SHARED_LIBS OFF)
-
 FetchContent_MakeAvailable(googletest)
 
 #----------------------------------------------------------------------------------------------------------------------
 # tests dependencies
 #----------------------------------------------------------------------------------------------------------------------
 
-if(is_top_level)
+if(PROJECT_IS_TOP_LEVEL)
     find_package(mylib 1.0.0 QUIET)
     if(NOT mylib_FOUND)
         message(STATUS "find_package(mylib) was NOT found, use as subproject ...")
@@ -64,7 +60,7 @@ target_sources(mylib-tests PRIVATE ${sources})
 
 target_link_libraries(mylib-tests PRIVATE mylib::mylib GTest::gtest_main)
 
-if(NOT is_top_level)
+if(NOT PROJECT_IS_TOP_LEVEL)
     # test if the targets are findable from the build directory
     # cmake-format: off
     add_test(find-package-test
